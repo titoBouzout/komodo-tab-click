@@ -1,0 +1,2 @@
+content tabclick chrome/content/
+overlay chrome://komodo/content/komodo.xul chrome://tabclick/content/tabclick.xul
