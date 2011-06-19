@@ -2,95 +2,87 @@
 <overlay  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
  
 	<script type="application/x-javascript">
-  	  
+  	  <![CDATA[
 	  /*
 		improvements more than welcome please submit these to github, regards
 	  */
 	  
-	  var titoTabClick = {
-		on:false,
-		currentTab: 0,
-		previousTab : null,
+		var titoTabClick = {
 		
-		load:function()
-		{
-		  removeEventListener('load', titoTabClick.load, false);
-		  addEventListener('current_view_changed', titoTabClick.currentTabChanged, false);
-		  document.getElementById('tabbed-view').addEventListener('click', titoTabClick.click, false);
-		  document.getElementById('tabbed-view').addEventListener('mouseover', titoTabClick.mouseSomething, false);
-		  document.getElementById('tabbed-view').addEventListener('mousedown', titoTabClick.mouseSomething, false);
-		},
-		unload:function()
-		{
-		  removeEventListener('current_view_changed', titoTabClick.currentTabChanged, false);
-		  document.getElementById('tabbed-view').removeEventListener('click', titoTabClick.click, false);
-		  document.getElementById('tabbed-view').removeEventListener('mouseover', titoTabClick.mouseSomething, false);
-		  document.getElementById('tabbed-view').removeEventListener('mousedown', titoTabClick.mouseSomething, false);
-		},
-		currentTabChanged:function()
-		{
-		  if(titoTabClick.previousTab != titoTabClick.currentTab)
-			titoTabClick.previousTab = titoTabClick.currentTab;
-		  titoTabClick.currentTab = ko.views.manager.currentView;
-		},
-		click:function(aEvent)
-		{
-		  if(aEvent.button == 0 &amp;&amp; titoTabClick.on)
+		  allowChange:false,
+		  currentTab: 0,
+		  previousTab : null,
+		  
+		  load:function()
 		  {
-			if(aEvent.originalTarget.tagName == 'html:embed'){}
+			removeEventListener('load', titoTabClick.load, false);
+			
+			document.getElementById('tabbed-view').addEventListener('mousedown', titoTabClick.mousedown, true);
+			addEventListener('current_view_changed', titoTabClick.currentTabChanged, false);
+			document.getElementById('tabbed-view').addEventListener('click', titoTabClick.click, false);
+		  },
+		  unload:function()
+		  {
+			document.getElementById('tabbed-view').removeEventListener('mousedown', titoTabClick.mousedown, true);
+			removeEventListener('current_view_changed', titoTabClick.currentTabChanged, false);
+			document.getElementById('tabbed-view').removeEventListener('click', titoTabClick.click, false);
+		  },
+		  currentTabChanged:function(aEvent)
+		  {
+			titoTabClick.previousTab = titoTabClick.currentTab;
+			titoTabClick.currentTab = aEvent.originalTarget;
+		  },
+		  mousedown:function(aEvent)
+		  {
+			if(aEvent.button != 0 || aEvent.originalTarget.tagName == 'html:embed')
+			  titoTabClick.allowChange = false;
 			else
 			{
 			  var tab = titoTabClick.getTab(aEvent.originalTarget);
-			  if(tab)
-			  {
-				setTimeout(function(){
-				  titoTabClick.focus();
-				}, 20);
-			  }
+			  if(tab && tab.getAttribute('selected') == 'true')
+				titoTabClick.allowChange = true;
+			  else
+				titoTabClick.allowChange = false;
+			}
+		  },
+		  click:function(aEvent)
+		  {
+			if(titoTabClick.allowChange === false || aEvent.button != 0 || aEvent.originalTarget.tagName == 'html:embed'){}
+			else
+			{
+			  try{titoTabClick.previousTab.makeCurrent();}catch(e){/*shhhhh*/}
+			  titoTabClick.allowChange = false;
+			}
+		  },
+		  getTab:function(aNode)
+		  {
+			try
+			{
+			  if(aNode.tagName == 'tab')
+				return aNode;
+			  else if(aNode.parentNode.tagName == 'tab')
+				return aNode.parentNode;
+			  else if(aNode.parentNode.parentNode.tagName == 'tab')
+				return aNode.parentNode.parentNode;
+			  else if(aNode.parentNode.parentNode.parentNode.tagName == 'tab')
+				return aNode.parentNode.parentNode.parentNode;
+			  else if(aNode.parentNode.parentNode.parentNode.parentNode.tagName == 'tab')
+				return aNode.parentNode.parentNode.parentNode.parentNode;
+			  else if(aNode.parentNode.parentNode.parentNode.parentNode.tagName == 'tab')
+				return aNode.parentNode.parentNode.parentNode.parentNode;
+			  else
+				return false;
+			}
+			catch(e)
+			{
+			  return false;
 			}
 		  }
-		},
-		mouseSomething:function(aEvent)
-		{
-		  if(aEvent.originalTarget.tagName == 'html:embed'){}
-		  else
-		  {
-			var tab = titoTabClick.getTab(aEvent.originalTarget);
-			if(tab &amp;&amp; tab.getAttribute('selected') == 'true')
-			  titoTabClick.on = true;
-			else
-			  titoTabClick.on = false;
-		  }
-		},
-		getTab:function(aNode)
-		{
-		  if(aNode.tagName == 'tab')
-			return aNode;
-		  else if(aNode.parentNode.tagName == 'tab')
-			return aNode.parentNode;
-		  else if(aNode.parentNode.parentNode.tagName == 'tab')
-			return aNode.parentNode.parentNode;
-		  else if(aNode.parentNode.parentNode.parentNode.tagName == 'tab')
-			return aNode.parentNode.parentNode.parentNode;
-		  else if(aNode.parentNode.parentNode.parentNode.parentNode.tagName == 'tab')
-			return aNode.parentNode.parentNode.parentNode.parentNode;
-		  else if(aNode.parentNode.parentNode.parentNode.parentNode.tagName == 'tab')
-			return aNode.parentNode.parentNode.parentNode.parentNode;
-		  else
-			return false;
-		},
-		focus:function()
-		{
-		  try{
-			titoTabClick.on = false;
-			titoTabClick.previousTab.makeCurrent();
-		  }catch(e){/*sh*/}
-		}
-	  };
-
-	  addEventListener('load', titoTabClick.load, false);
-	  addEventListener('unload', titoTabClick.unload, false);
-	  
+		};
+  
+		addEventListener('load', titoTabClick.load, false);
+		addEventListener('unload', titoTabClick.unload, false);
+	  ]]>
 	</script>
 
 </overlay>

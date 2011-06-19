@@ -6,7 +6,7 @@
     <Description about="urn:mozilla:install-manifest">
         <em:id>tito@tabclick</em:id>
         <em:name>Tab click</em:name>
-        <em:version>0</em:version>
+        <em:version>0.1</em:version>
         <em:description>A click on current tab will focus the previous focused tab.</em:description>
         <em:creator>Tito Bouzout</em:creator>
 		<em:homepageURL>https://github.com/titoBouzout/komodo-tab-click</em:homepageURL>
