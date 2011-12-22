@@ -15,71 +15,70 @@
 		  
 		  load:function()
 		  {
-			removeEventListener('load', titoTabClick.load, false);
-			
-			document.getElementById('tabbed-view').addEventListener('mousedown', titoTabClick.mousedown, true);
-			addEventListener('current_view_changed', titoTabClick.currentTabChanged, false);
-			document.getElementById('tabbed-view').addEventListener('click', titoTabClick.click, false);
+				removeEventListener('load', titoTabClick.load, false);
+				
+				document.getElementById('topview').addEventListener('mousedown', titoTabClick.mousedown, true);
+				addEventListener('current_view_changed', titoTabClick.currentTabChanged, false);
+				document.getElementById('topview').addEventListener('click', titoTabClick.click, false);
 		  },
 		  unload:function()
 		  {
-			document.getElementById('tabbed-view').removeEventListener('mousedown', titoTabClick.mousedown, true);
-			removeEventListener('current_view_changed', titoTabClick.currentTabChanged, false);
-			document.getElementById('tabbed-view').removeEventListener('click', titoTabClick.click, false);
+				document.getElementById('topview').removeEventListener('mousedown', titoTabClick.mousedown, true);
+				removeEventListener('current_view_changed', titoTabClick.currentTabChanged, false);
+				document.getElementById('topview').removeEventListener('click', titoTabClick.click, false);
 		  },
 		  currentTabChanged:function(aEvent)
 		  {
-			titoTabClick.previousTab = titoTabClick.currentTab;
-			titoTabClick.currentTab = aEvent.originalTarget;
+				titoTabClick.previousTab = titoTabClick.currentTab;
+				titoTabClick.currentTab = aEvent.originalTarget;
 		  },
 		  mousedown:function(aEvent)
 		  {
-			if(aEvent.button != 0 || aEvent.originalTarget.tagName == 'html:embed')
-			  titoTabClick.allowChange = false;
-			else
-			{
-			  var tab = titoTabClick.getTab(aEvent.originalTarget);
-			  if(tab && tab.getAttribute('selected') == 'true')
-				titoTabClick.allowChange = true;
-			  else
-				titoTabClick.allowChange = false;
-			}
+				if(aEvent.button != 0 || aEvent.originalTarget.tagName == 'html:embed')
+				  titoTabClick.allowChange = false;
+				else
+				{
+				  var tab = titoTabClick.getTab(aEvent.originalTarget);
+				  if(tab && tab.getAttribute('selected') == 'true')
+						titoTabClick.allowChange = true;
+				  else
+						titoTabClick.allowChange = false;
+				}
 		  },
 		  click:function(aEvent)
 		  {
-			if(titoTabClick.allowChange === false || aEvent.button != 0 || aEvent.originalTarget.tagName == 'html:embed'){}
-			else
-			{
-			  try{titoTabClick.previousTab.makeCurrent();}catch(e){/*shhhhh*/}
-			  titoTabClick.allowChange = false;
-			}
+				if(titoTabClick.allowChange === false || aEvent.button != 0 || aEvent.originalTarget.tagName == 'html:embed'){}
+				else
+				{
+				  try{titoTabClick.previousTab.makeCurrent();}catch(e){/*shhhhh*/}
+				  titoTabClick.allowChange = false;
+				}
 		  },
 		  getTab:function(aNode)
 		  {
-			try
-			{
-			  if(aNode.tagName == 'tab')
-				return aNode;
-			  else if(aNode.parentNode.tagName == 'tab')
-				return aNode.parentNode;
-			  else if(aNode.parentNode.parentNode.tagName == 'tab')
-				return aNode.parentNode.parentNode;
-			  else if(aNode.parentNode.parentNode.parentNode.tagName == 'tab')
-				return aNode.parentNode.parentNode.parentNode;
-			  else if(aNode.parentNode.parentNode.parentNode.parentNode.tagName == 'tab')
-				return aNode.parentNode.parentNode.parentNode.parentNode;
-			  else if(aNode.parentNode.parentNode.parentNode.parentNode.tagName == 'tab')
-				return aNode.parentNode.parentNode.parentNode.parentNode;
-			  else
-				return false;
-			}
-			catch(e)
-			{
-			  return false;
-			}
+				try
+				{
+				  if(aNode.tagName == 'tab')
+						return aNode;
+				  else if(aNode.parentNode.tagName == 'tab')
+						return aNode.parentNode;
+				  else if(aNode.parentNode.parentNode.tagName == 'tab')
+						return aNode.parentNode.parentNode;
+				  else if(aNode.parentNode.parentNode.parentNode.tagName == 'tab')
+						return aNode.parentNode.parentNode.parentNode;
+				  else if(aNode.parentNode.parentNode.parentNode.parentNode.tagName == 'tab')
+						return aNode.parentNode.parentNode.parentNode.parentNode;
+				  else if(aNode.parentNode.parentNode.parentNode.parentNode.tagName == 'tab')
+						return aNode.parentNode.parentNode.parentNode.parentNode;
+				  else
+						return false;
+				}
+				catch(e)
+				{
+				  return false;
+				}
 		  }
 		};
-  
 		addEventListener('load', titoTabClick.load, false);
 		addEventListener('unload', titoTabClick.unload, false);
 	  ]]>
